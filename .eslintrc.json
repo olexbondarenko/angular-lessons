@@ -34,7 +34,12 @@
             "prefix": "app",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "no-debugger": "error",
+        "no-unused-vars": "error",
+        "use-isnan": "error",
+        "no-const-assign": "error",
+        "no-dupe-args": "error"
       }
     },
     {
