@@ -1,0 +1,209 @@
+@keyframes handMove {
+    0%{ transform: translateY(0); }
+    100%{ transform: translateY(-10px); }
+}
+.app-game{
+    position: relative;
+    width: 800px;
+    height: 600px;
+    margin: auto;
+    padding: 30px;
+    background-color: #00796B;
+    overflow: hidden;
+    &__start{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        &-title{
+            font-size: 50px;
+            text-transform: uppercase;
+            text-align: center;
+            font-weight: 700;
+            color: #fff;
+        }
+        &-icon{
+            margin-bottom: 30px;
+            font-size: 100px;
+            color: #fff;
+        }
+        &-field{
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            height: 45px;
+            padding: 0 15px;
+            margin-bottom: 15px;
+            border: 1px solid #f0f0f0;
+            background: #fff;
+            &--error{
+                border-color: red;
+            }
+        }
+        &-btn{
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            height: 50px;
+            padding: 0 15px;
+            margin-bottom: 15px;
+            border: 1px solid #f0f0f0;
+            background: transparent;
+            font-size: 18px;
+            line-height: 50px;
+            text-transform: uppercase;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color .5s;
+            &:hover{
+                background-color: #fff;
+                color: #00796B;
+            }
+        }
+    }
+    &__process{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+    }
+    &__players{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+    &__player{
+        flex-basis: 50%;
+        &:last-child{
+            text-align: right;
+        }
+        &-score{
+            margin-bottom: 15px;
+            font-size: 30px;
+            color: #fff;
+        }
+        &-name{
+            font-size: 30px;
+            text-transform: uppercase;
+            color: #fff;
+        }
+    }
+    &__area{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        margin: 0 -30px;
+        &-value{
+            position: relative;
+            color: #fff;
+
+            .ng-fa-icon{
+                display: block;
+            }
+            .fa-flip-horizontal,
+            .fa-flip-vertical{
+                display: block;
+            }
+            &.animated{
+                animation-duration: .5s;
+                animation-iteration-count: 5;
+                animation-timing-function: linear;
+                animation-direction: alternate;
+                animation-name: handMove;
+            }
+            &--won{
+                color: #00C853;
+            }
+            &--lost{
+                color: #D50000;
+            }
+            &--draw{
+                color: #FFFF00;
+            }
+        }
+    }
+    &__actions{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &-item{
+            width: 100px;
+            height: 100px;
+            background: #fff;
+            margin-right: 30px;
+            border-radius: 5px;
+            font-size: 50px;
+            line-height: 100px;
+            text-align: center;
+            color: #00796B;
+            cursor: pointer;
+            transition: transform .5s;
+            &:last-child{
+                margin-right: 0;
+            }
+            &:hover{
+                transform: translateY(-5px);
+            }
+            .ng-fa-icon{
+                display: block;
+            }
+            &--disabled{
+                pointer-events: none;
+                opacity: 0.8;
+            }
+        }
+    }
+    &__gameover{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba($color: #000, $alpha: 0.5);
+        &-inner{
+            width: 500px;
+            padding: 50px 30px;
+            background-color: #fff;
+        }
+        &-icon{
+            font-size: 50px;
+            text-align: center;
+            color: #00796B;
+        }
+        &-player{
+            margin-bottom: 30px;
+            font-size: 40px;
+            text-transform: uppercase;
+            text-align: center;
+            font-weight: 700;
+            color: #00796B;
+        }
+        &-retry{
+            display: block;
+            width: 100%;
+            max-width: 50px;
+            height: 50px;
+            margin: auto;
+            padding: 0 15px;
+            border: 1px solid #f0f0f0;
+            background-color: #fff;
+            font-size: 18px;
+            line-height: 50px;
+            text-transform: uppercase;
+            color: #00796B;
+            cursor: pointer;
+            transition: background-color, color .5s;
+            &:hover{
+                background-color: #00796B;
+                color: #fff;
+            }
+        }
+    }
+}
