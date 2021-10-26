@@ -6,8 +6,8 @@
         <div class="app-game__start-icon">
             <fa-icon icon="gamepad"></fa-icon>
         </div>
-        <input class="app-game__start-field" [ngClass]="player2.name.hasError ? 'app-game__start-field--error' : ''"
-            [(ngModel)]="player2.name.value" placeholder="Enter your name" />
+        <input class="app-game__start-field" [ngClass]="!user.name ? 'app-game__start-field--error' : ''"
+            [(ngModel)]="user.name" placeholder="Enter your name" />
         <button class="app-game__start-btn" (click)="startGame()">Play now</button>
     </div>
     <div class="app-game__process" *ngIf="isGameStarted && !isGameOver">
@@ -15,40 +15,38 @@
             <div class="app-game__player">
                 <div class="app-game__player-score">
                     <fa-icon icon="flag-checkered"></fa-icon>
-                    {{player1.score}}
+                    {{computer.score}}
                 </div>
                 <div class="app-game__player-name">
-                    {{player1.name}}
+                    {{computer.name}}
                 </div>
             </div>
             <div class="app-game__player">
                 <div class="app-game__player-score">
                     <fa-icon icon="flag-checkered"></fa-icon>
-                    {{player2.score}}
+                    {{user.score}}
                 </div>
                 <div class="app-game__player-name">
-                    {{player2.name.value}}
+                    {{user.name}}
                 </div>
             </div>
         </div>
         <div class="app-game__area">
-            <div class="app-game__area-value"
-                [ngClass]="{'animated': isFightStarted, 'app-game__area-value--won': player1.raundResult === 1, 'app-game__area-value--lost': player1.raundResult === 2, 'app-game__area-value--draw': player1.raundResult === 3}">
-                <span class="fa-flip-horizontal" *ngIf="player1.value === 0">
+            <div class="app-game__area-value" [ngClass]="{'animated': isFightStarted}">
+                <span class="fa-flip-horizontal" *ngIf="computer.value === 0">
                     <fa-icon icon="fist-raised" class="fa-fw fa-10x fa-rotate-270"></fa-icon>
                 </span>
-                <fa-icon icon="hand-rock" class="fa-fw fa-10x fa-rotate-90" *ngIf="player1.value === 1"></fa-icon>
-                <fa-icon icon="hand-scissors" class="fa-fw fa-10x fa-rotate-180" *ngIf="player1.value === 2"></fa-icon>
-                <fa-icon icon="hand-paper" class="fa-fw fa-10x fa-rotate-90" *ngIf="player1.value === 3"></fa-icon>
+                <fa-icon icon="hand-rock" class="fa-fw fa-10x fa-rotate-90" *ngIf="computer.value === 1"></fa-icon>
+                <fa-icon icon="hand-scissors" class="fa-fw fa-10x fa-rotate-180" *ngIf="computer.value === 2"></fa-icon>
+                <fa-icon icon="hand-paper" class="fa-fw fa-10x fa-rotate-90" *ngIf="computer.value === 3"></fa-icon>
             </div>
-            <div class="app-game__area-value"
-                [ngClass]="{'animated': isFightStarted, 'app-game__area-value--won': player2.raundResult === 1, 'app-game__area-value--lost': player2.raundResult === 2, 'app-game__area-value--draw': player2.raundResult === 3}">
-                <fa-icon icon="fist-raised" class="fa-fw fa-10x fa-rotate-270" *ngIf="player2.value === 0"></fa-icon>
-                <span class="fa-flip-vertical" *ngIf="player2.value === 1">
+            <div class="app-game__area-value" [ngClass]="{'animated': isFightStarted}">
+                <fa-icon icon="fist-raised" class="fa-fw fa-10x fa-rotate-270" *ngIf="user.value === 0"></fa-icon>
+                <span class="fa-flip-vertical" *ngIf="user.value === 1">
                     <fa-icon icon="hand-rock" class="fa-fw fa-10x fa-rotate-270"></fa-icon>
                 </span>
-                <fa-icon icon="hand-scissors" class="fa-fw fa-10x" *ngIf="player2.value === 2"></fa-icon>
-                <fa-icon icon="hand-paper" class="fa-fw fa-10x fa-rotate-270" *ngIf="player2.value === 3"></fa-icon>
+                <fa-icon icon="hand-scissors" class="fa-fw fa-10x" *ngIf="user.value === 2"></fa-icon>
+                <fa-icon icon="hand-paper" class="fa-fw fa-10x fa-rotate-270" *ngIf="user.value === 3"></fa-icon>
             </div>
         </div>
         <div class="app-game__actions">
@@ -71,7 +69,7 @@
             <div class="app-game__gameover-icon">
                 <fa-icon icon="gamepad"></fa-icon>
             </div>
-            <div class="app-game__gameover-player">{{playerWin}} win!</div>
+            <div class="app-game__gameover-player">{{playerWin}}</div>
             <button class="app-game__gameover-retry" (click)="retryGame()">
                 <fa-icon icon="undo"></fa-icon>
             </button>
