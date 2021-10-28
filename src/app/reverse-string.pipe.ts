@@ -3,6 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
   name: 'reverseString'
 })
+
 export class ReverseStringPipe implements PipeTransform {
   transform(string: string, reverseCount: number): string {
     var reversedString = "";
