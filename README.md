@@ -3,5 +3,5 @@
 ## How to set a default value for @Input() property?
 
 ## What is the difference between @ViewChild() і @ContentChild()?
-
+ 
 ## Why do we add providedIn: ‘root’?
