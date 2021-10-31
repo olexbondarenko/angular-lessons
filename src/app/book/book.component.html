@@ -1,0 +1,13 @@
+<div class="book">
+    <div class="book__detail">
+        <a [href]="book.link" target="_blank" class="book__detail-title">{{book.title}}</a>
+        <div class="book__detail-item"><strong>Author:</strong> {{book.author}}</div>
+        <div class="book__detail-item"><strong>Pages:</strong> {{book.pages}}</div>
+        <div class="book__detail-item"><strong>Year:</strong> {{book.year}}</div>
+    </div>
+    <div class="book__actions">
+        <button class="book__actions-item book__actions-item--update"
+            (click)="showBookForm(book, index)">Update</button>
+        <button class="book__actions-item book__actions-item--remove" (click)="removeBook(index)">Remove</button>
+    </div>
+</div>

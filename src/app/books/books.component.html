@@ -1,0 +1,21 @@
+<div class="books">
+    <ng-container *ngIf="isBookForm else bookList">
+        <app-book-form [book]="book" [index]="index" [isAdd]="isAdd" [isUpdate]="isUpdate"
+            (onAddBook)="onAddBook($event)" (onUpdateBook)="onUpdateBook($event)">
+        </app-book-form>
+    </ng-container>
+    <ng-template #bookList>
+        <button class="books__add-book" (click)="addBook()">Add book</button>
+        <ng-container *ngIf="books.length !== 0; else notFound">
+            <div class="books__list">
+                <h2 class="books__list-title">Books list:</h2>
+                <app-book class="books__item" *ngFor="let book of books; let index = index" [book]="book"
+                    [index]="index" (onRemoveBook)="onRemoveBook($event)" (onShowBookForm)="onShowBookForm($event)">
+                </app-book>
+            </div>
+        </ng-container>
+        <ng-template #notFound>
+            <div class="books__not-found">Nothing to show.</div>
+        </ng-template>
+    </ng-template>
+</div>

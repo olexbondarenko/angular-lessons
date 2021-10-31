@@ -1,0 +1,33 @@
+<div class="book-form">
+    <div class="book-form__title" *ngIf="isAdd">Add new book:</div>
+    <div class="book-form__title" *ngIf="isUpdate">Update book:</div>
+    <div class="book-form__fields">
+        <div class="book-form__field">
+            <label for="title">Title:</label>
+            <input type="text" id="title" [(ngModel)]="book.title" placeholder="">
+        </div>
+        <div class="book-form__field">
+            <label for="author">Author:</label>
+            <input type="text" id="author" [(ngModel)]="book.author" placeholder="">
+        </div>
+        <div class="book-form__field">
+            <label for="pages">Pages:</label>
+            <input type="text" id="pages" [(ngModel)]="book.pages" placeholder="">
+        </div>
+        <div class="book-form__field">
+            <label for="year">Year:</label>
+            <input type="text" id="year" [(ngModel)]="book.year" placeholder="">
+        </div>
+        <div class="book-form__field">
+            <label for="link">Link:</label>
+            <input type="text" id="link" [(ngModel)]="book.link" placeholder="">
+        </div>
+    </div>
+    <div class="book-form__actions">
+        <button class="book-form__actions-item book-form__actions-item--add" *ngIf="isAdd" (click)="addBook()">
+            Add book
+        </button>
+        <button class="book-form__actions-item book-form__actions-item--update" *ngIf="isUpdate"
+            (click)="updateBook()">Update book</button>
+    </div>
+</div>

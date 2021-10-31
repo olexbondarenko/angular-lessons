@@ -1,0 +1,40 @@
+.books{
+    max-width: 500px;
+    margin: auto;
+    padding: 30px 15px;
+    &__add-book{
+        display: block;
+        width: 100%;
+        height: 42px;
+        margin-bottom: 30px;
+        padding: 0 15px;
+        background: rgb(46, 214, 110);
+        border: none;
+        font-size: 14px;
+        color: #ffffff;
+        cursor: pointer;
+        &:hover{
+            opacity: 0.8;
+        }
+    }
+    &__list{
+        &-title{
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 25px;
+        }
+    }
+    &__item{
+        display: block;
+        margin-bottom: 15px;
+        &:last-child{
+            margin-bottom: 0;
+        }
+    }
+    &__not-found{
+        background: #f0f0f0;
+        padding: 15px;
+        font-size: 16px;
+    }
+}
