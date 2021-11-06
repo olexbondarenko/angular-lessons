@@ -1,27 +1,13 @@
-# Lesson5
+## What kind of form is better for a big project?
+- Для большого проекта лучше использовать "Reactive Form", так как проще расширять их функционал, управлять и валидировать данные.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.11.
+## Describe component lifecycle hooks: OnInit, OnChanges, AfterViewInit
+- OnInit - Срабатывает, когда инициализируется директива или компонент после того, как Angular отобразит свойства с привязкой к данным и задаст входные свойства директивы или компонента.
+- OnChanges - Срабатывает, когда Angular устанавливает или сбрасывает свойства ввода с привязкой к данным. Метод получает объект текущего и предыдущего значений свойств.
+- AfterViewInit - Срабатывает, как Angular инициализирует представления компонента и дочерние представления или представление, содержащее директиву.
 
-## Development server
+## Describe built-in validation in Angular
+- Angular предоставляет несколько удобных встроенных валидаторов, которые можно использовать для реактивных форм и форм на основе шаблонов. Большинство известных валидаторы являются min, max, minLength, maxLengthи pattern, required, requiredTrue. Мы можем использовать эти встроенные валидаторы в реактивных формах, а также в формах на основе шаблонов.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## What is formControl?
+- FormControl отслеживает значение и статус проверки отдельного элемента управления формы.

@@ -1,0 +1,41 @@
+<h2 class="form__title">Form Driven</h2>
+<form #formDriven="ngForm" (ngSubmit)="onSubmitForm(formDriven)" noValidate class="form__main">
+    <div class="form__field">
+        <label for="first-name">First Name:</label>
+        <input type="text" id="first-name" name="firstName" pattern="[A-Za-z]{1,32}" required ngModel>
+    </div>
+    <div class="form__field">
+        <label for="last-name">Last Name:</label>
+        <input type="text" id="last-name" name="lastName" pattern="[A-Za-z]{1,32}" required ngModel>
+    </div>
+    <div class="form__field">
+        <label for="email">User Email:</label>
+        <input type="email" id="email" name="email"
+            pattern="[a-zA-Z0-9.!#$%=’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+"
+            [ngClass]="{error: formDriven.controls }" required ngModel>
+    </div>
+    <div class="form__field">
+        <label for="phone">User Phone:</label>
+        <input type="tel" id="phone" name="phone" pattern="^[0-9]{10,12}$" required ngModel>
+    </div>
+    <div class="form__field">
+        <label for="message">User Mesage:</label>
+        <textarea id="message" name="message" ngModel></textarea>
+    </div>
+    <div class="form__actions">
+        <button class="form__actions-item form__actions-item--submit" type="submit"
+            [disabled]="formDriven.status === 'INVALID'">
+            Submit
+        </button>
+        <button class="form__actions-item form__actions-item--reset" type="button" (click)="onResetForm(formDriven)">
+            Reset
+        </button>
+    </div>
+</form>
+<div class="form__data" *ngIf="isFormSubmited">
+    <p><strong>First Name: </strong>{{ user.firstName }}</p>
+    <p><strong>Last Name: </strong>{{ user.lastName }}</p>
+    <p><strong>User Email: </strong>{{ user.email }}</p>
+    <p><strong>User Phone: </strong>{{ user.phone }}</p>
+    <p><strong>User Mesage: </strong>{{ user.message }}</p>
+</div>

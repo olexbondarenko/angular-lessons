@@ -1,0 +1,39 @@
+<h2 class="form__title">Form Reactive</h2>
+<form (ngSubmit)="onSubmitForm()" [formGroup]="formReactive" class="form__main">
+    <div class="form__field">
+        <label for="first-name-2">First Name:</label>
+        <input type="text" id="first-name-2" formControlName="firstName">
+    </div>
+    <div class="form__field">
+        <label for="last-name-2">Last Name:</label>
+        <input type="text" id="last-name-2" formControlName="lastName">
+    </div>
+    <div class="form__field">
+        <label for="email-2">User Email:</label>
+        <input type="email" id="email-2" formControlName="email">
+    </div>
+    <div class="form__field">
+        <label for="phone-2">User Phone:</label>
+        <input type="text" id="phone-2" formControlName="phone">
+    </div>
+    <div class="form__field">
+        <label for="message-2">User Mesage:</label>
+        <textarea id="message-2" formControlName="message"></textarea>
+    </div>
+    <div class="form__actions">
+        <button class="form__actions-item form__actions-item--submit" type="submit"
+            [disabled]="formReactive.status === 'INVALID'">
+            Submit
+        </button>
+        <button class="form__actions-item form__actions-item--reset" type="button" (click)="onResetForm()">
+            Reset
+        </button>
+    </div>
+</form>
+<div class="form__data" *ngIf="isFormSubmited">
+    <p><strong>First Name: </strong>{{ user.firstName }}</p>
+    <p><strong>Last Name: </strong>{{ user.lastName }}</p>
+    <p><strong>User Email: </strong>{{ user.email }}</p>
+    <p><strong>User Phone: </strong>{{ user.phone }}</p>
+    <p><strong>User Mesage: </strong>{{ user.message }}</p>
+</div>
