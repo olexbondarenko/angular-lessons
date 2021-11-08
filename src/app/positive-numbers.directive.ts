@@ -6,6 +6,6 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 
 export class PositiveNumbersDirective {
   @HostListener('keypress', ['$event']) onKeyPress(event: any) {
-    event.key.match(/^[0-9]*\.?[0-9]*$/) === null ? event.preventDefault() : ''
+    event.key.match(/^[0-9]*\.?[0-9]*?$/g) === null ? event.preventDefault() : ''
   }
 }
