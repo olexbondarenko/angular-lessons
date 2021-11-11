@@ -1,0 +1,29 @@
+@import "./variables";
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+main {
+    padding: 30px 0;
+    background: $black;
+}
+
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+
+    @media only screen and (min-width:768px) {
+        width: 750px;
+    }
+
+    @media only screen and (min-width:992px) {
+        width: 970px;
+    }
+
+    @media only screen and (min-width:1200px) {
+        width: 1180px;
+    }
+}

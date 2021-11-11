@@ -1,0 +1,26 @@
+<section class="history">
+    <div class="weather-history">
+        <div class="weather-history__item" *ngFor="let day of historicalWeather">
+            <div class="weather-history__card">
+                <div class="weather-history__card-head">
+                    <div class="weather-history__icon">
+                        <img [src]="'http://openweathermap.org/img/wn/' + day?.current?.weather[0]?.icon + '@2x.png'"
+                            alt="weather">
+                    </div>
+                    <div class="weather-history__main">
+                        <div class="weather-history__date">
+                            {{ day?.current?.dt * 1000 | date: 'd MMM' }}
+                        </div>
+                        <div class="weather-history__weather">
+                            {{day?.current?.weather[0]?.main}}, {{day?.current?.weather[0]?.description}}
+                        </div>
+                    </div>
+                </div>
+                <div class="weather-history__temp">
+                    <i class="wi wi-day-lightning"></i>
+                    {{day?.current?.temp | number: "1.0-0"}}&#x2103;
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
