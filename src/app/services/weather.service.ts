@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Weather } from '../interfaces/weather';
+import { Units } from '../interfaces/units';
+import { Geolocation } from '../interfaces/geolocation';
 
 @Injectable({
   providedIn: 'root'
@@ -8,41 +12,98 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class WeatherService {
   constructor(private http: HttpClient) { }
 
-  private headers = {
-    "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
-    "x-rapidapi-key": "2fab0a1b27mshc6f61e079cd67a9p160f9ejsnbb1506756435"
-  }
   private api = {
-    url: "https://community-open-weather-map.p.rapidapi.com",
+    key: "2f143f913f1ddec2639ca8d651917bb3",
+    url: "https://api.openweathermap.org/data/2.5",
+    urlGeo: "http://api.openweathermap.org/geo/1.0",
     points: {
-      current: "/weather",
-      historical: "/onecall/timemachine"
+      current: "/onecall",
+      historical: "/onecall/timemachine",
+      geo: "/direct"
     }
   }
 
-  private currentWeather: any = { "coord": { "lon": 30.5167, "lat": 50.4333 }, "weather": [{ "id": 803, "main": "Clouds", "description": "облачно с прояснениями", "icon": "04d" }], "base": "stations", "main": { "temp": 10.03, "feelslike": 8.73, "tempmin": 9.05, "temp_max": 10.9, "pressure": 1007, "humidity": 63 }, "visibility": 10000, "wind": { "speed": 0.89, "deg": 155, "gust": 1.79 }, "clouds": { "all": 75 }, "dt": 1636367740, "sys": { "type": 2, "id": 2003742, "country": "UA", "sunrise": 1636347630, "sunset": 1636381375 }, "timezone": 7200, "id": 703448, "name": "Киев", "cod": 200 };
-
-  // Get current weather data
-  async getCurrentWeather(location: string) {
-    const headers = this.headers;
-    const params = {
-      q: location,
-      lang: "ru",
-      units: "metric",
-      mode: "JSON"
+  public currentUnits: BehaviorSubject<string> = new BehaviorSubject("metric");
+  public units: BehaviorSubject<Units[]> = new BehaviorSubject([
+    {
+      name: "metric",
+      icon: "celsius",
+      isActive: true
+    },
+    {
+      name: "imperial",
+      icon: "fahrenheit",
+      isActive: false
     }
+  ]);
 
-    // this.http.get<any>(this.api.url + this.api.points.current, { headers, params }).subscribe(data => {
-    //   this.currentWeather = data;
-    //   console.log("Current Weather:", data)
-    // })
-    // console.log("Current Weather:", this.currentWeather)
+  public currentCity: BehaviorSubject<string> = new BehaviorSubject("");
+  public currentLocation: BehaviorSubject<Geolocation> = new BehaviorSubject<Geolocation>({
+    lat: 0,
+    lon: 0,
+    city: "",
+    name: "",
+    regionName: "",
+  });
+
+
+  // Changes active units also set current
+  setUnit(units: any, currentUnits: string): void {
+    this.units.next(units);
+    this.currentUnits.next(currentUnits);
   }
 
+  // Set current location
+  setCurrentLocation(currentLocation: Geolocation): void {
+    this.currentLocation.next(currentLocation);
+    this.currentCity.next(currentLocation.city);
+    this.currentCity.next(currentLocation.name);
+  }
 
-  // Get historical weather data
-  async getHistoricalWeather(params: any): Promise<object> {
-    const headers = this.headers;
-    return await this.http.get<any>(this.api.url + this.api.points.historical, { headers, params }).toPromise()
+  // Set city name
+  setCurrentCity(currentCity: string): void {
+    this.currentCity.next(currentCity)
+  }
+
+  // Returns timestamp from current date
+  getTimestamp(daysBefore: number): number {
+    let date: Date = new Date();
+    date.setDate(date.getDate() - daysBefore);
+    return Date.parse(date.toString()) / 1000;
+  }
+
+  // Get coordinates by city name
+  getCityGeolocation(currentCity: string) {
+    let params = {
+      q: currentCity,
+      appid: this.api.key,
+    }
+    this.http.get<Geolocation[]>(this.api.urlGeo + this.api.points.geo, { params }).subscribe((city) => {
+      this.setCurrentLocation(city[0]);
+    })
+  }
+
+  // Gets current weather data and also for 5 next days
+  getCurrentWeather(): Observable<Weather> {
+    let params = {
+      lat: this.currentLocation.getValue().lat,
+      lon: this.currentLocation.getValue().lon,
+      exclude: "minutely,hourly,alerts",
+      units: this.currentUnits.getValue(),
+      appid: this.api.key,
+    };
+    return this.http.get<Weather>(this.api.url + this.api.points.current, { params });
+  }
+
+  // Gets historical weather data for 5 previous days
+  getHistoricalWeather(day: number): Observable<Weather> {
+    let params = {
+      lat: this.currentLocation.getValue().lat,
+      lon: this.currentLocation.getValue().lon,
+      units: this.currentUnits.getValue(),
+      appid: this.api.key,
+      dt: this.getTimestamp(day),
+    };
+    return this.http.get<Weather>(this.api.url + this.api.points.historical, { params });
   }
 }

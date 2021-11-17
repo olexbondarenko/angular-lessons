@@ -1,43 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { WeatherService } from 'src/app/services/weather.service';
+import { Subscription } from 'rxjs';
+import { Weather } from 'src/app/interfaces/weather';
 
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.scss']
 })
-export class HistoryComponent implements OnInit {
+
+export class HistoryComponent implements OnInit, OnDestroy {
   constructor(private weatherService: WeatherService) { }
 
-  public sessionHistoricalWeather: any = sessionStorage.getItem('historicalWeather');
-  public historicalWeather: any = this.sessionHistoricalWeather ? JSON.parse(this.sessionHistoricalWeather) : []
+  public subscription: Subscription = new Subscription;
+  public title: string = "History";
+  public currentUnits: string = "";
+  public historyDays: number = 5;
+  public historicalWeather: Weather[] = [];
 
   ngOnInit() {
-    if (sessionStorage.getItem("historicalWeather") === null) {
-      this.getHistory();
-    }
+    this.subscription = this.weatherService.currentUnits.subscribe(async (units: string) => {
+      this.currentUnits = units;
+      this.historicalWeather = [];
+
+      for (let day = 1; day <= this.historyDays; day++) {
+        this.weatherService.getHistoricalWeather(day).subscribe(data => {
+          this.historicalWeather.push(data);
+        });
+      }
+    })
   }
 
-  getTimestamp(daysBefore: number): number {
-    let date: Date = new Date();
-    date.setDate(date.getDate() - daysBefore);
-    return Date.parse(date.toString()) / 1000;
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
-
-  async getHistory() {
-    let historyDays = 5;
-    let history = null;
-
-    for (let day = 1; day <= historyDays; day++) {
-      history = await this.weatherService.getHistoricalWeather({
-        lat: '50.4333',
-        lon: '30.5167',
-        units: "metric",
-        dt: this.getTimestamp(day)
-      });
-      this.historicalWeather.push(history);
-    }
-    sessionStorage.setItem("historicalWeather", JSON.stringify(this.historicalWeather));
-  }
-
 }

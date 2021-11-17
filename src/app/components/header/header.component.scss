@@ -1,8 +1,15 @@
 @import "../../../styles/variables";
 
 .header {
-    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    height: $header-height;
     background: $black-light;
+    z-index: 100;
 
     &__row {
         display: flex;
@@ -16,7 +23,7 @@
         font-weight: 700;
         text-transform: uppercase;
         text-decoration: none;
-        color: $white;
+        color: $yellow;
     }
 
     &__options {
@@ -42,10 +49,14 @@
         }
 
         a {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 300;
             text-decoration: none;
-            color: $yellow;
+            color: $white;
+
+            &.active {
+                color: $yellow;
+            }
         }
     }
 
@@ -59,7 +70,7 @@
             margin-right: 10px;
             border: 1px solid $yellow;
             border-radius: 50%;
-            font-size: 14px;
+            font-size: 20px;
             line-height: 32px;
             text-align: center;
             color: $yellow;
@@ -71,10 +82,8 @@
             }
 
             &:hover {
-                &:not(.current) {
-                    background: rgba($color: $yellow, $alpha: 0.5);
-                    color: $white;
-                }
+                background: $yellow;
+                color: $white;
             }
 
             &:last-child {

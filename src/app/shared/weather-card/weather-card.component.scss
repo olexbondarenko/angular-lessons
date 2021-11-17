@@ -1,19 +1,6 @@
 @import "../../../styles/variables";
 
-.weather-history {
-    &__list {
-        display: flex;
-        flex-wrap: wrap;
-        margin: 0 -10px;
-    }
-
-    &__col {
-        flex-basis: 50%;
-        max-width: 50%;
-        margin-bottom: 20px;
-        padding: 0 10px;
-    }
-
+.weather-card {
     &__item {
         padding: 15px;
         background: rgba($color: $black-light, $alpha: 0.5);
@@ -41,7 +28,7 @@
         padding: 0 10px;
 
         &-date {
-            font-size: 45px;
+            font-size: 40px;
             font-weight: 700;
             color: $yellow;
         }
