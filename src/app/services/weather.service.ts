@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Weather } from '../interfaces/weather';
 import { Units } from '../interfaces/units';
 import { Geolocation } from '../interfaces/geolocation';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class WeatherService {
   constructor(private http: HttpClient) { }
 
   private api = {
-    key: "2f143f913f1ddec2639ca8d651917bb3",
+    key: environment.apiKey,
     url: "https://api.openweathermap.org/data/2.5",
     urlGeo: "http://api.openweathermap.org/geo/1.0",
     points: {
