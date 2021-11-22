@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { GeolocationService } from './services/geolocation.service';
 import { WeatherService } from './services/weather.service';
 
@@ -8,12 +9,22 @@ import { WeatherService } from './services/weather.service';
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent implements OnInit {
-  constructor(private geolocation: GeolocationService, private weatherService: WeatherService) { }
+export class AppComponent implements OnDestroy {
+  public subscription = new Subscription;
 
-  async ngOnInit(): Promise<void> {
-    await this.geolocation.getCurrentLocation().then((currentLocation) => {
-      this.weatherService.setCurrentLocation(currentLocation)
-    });
+  constructor(private geolocation: GeolocationService, private weatherService: WeatherService) {
+    this.subscription = this.geolocation.getCurrentLocation().subscribe(
+      (response) => {
+        this.weatherService.setCurrentLocation(response);
+      },
+      (error) => {
+        this.weatherService.setError(error.statusText);
+        this.subscription.unsubscribe();
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

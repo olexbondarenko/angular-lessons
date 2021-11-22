@@ -2,8 +2,7 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 export const environment = {
-  production: false,
-  apiKey: "2f143f913f1ddec2639ca8d651917bb3"
+  production: false
 };
 
 /*

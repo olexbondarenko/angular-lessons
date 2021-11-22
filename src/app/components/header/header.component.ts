@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { WeatherService } from 'src/app/services/weather.service';
 
@@ -8,14 +8,12 @@ import { WeatherService } from 'src/app/services/weather.service';
   styleUrls: ['./header.component.scss']
 })
 
-export class HeaderComponent implements OnInit, OnDestroy {
-  constructor(private weatherService: WeatherService) { }
-
+export class HeaderComponent implements OnDestroy {
   public subscription: Subscription = new Subscription;
   public currentUnits: string = "";
   public units: any = [];
-
-  ngOnInit(): void {
+  
+  constructor(private weatherService: WeatherService) { 
     this.subscription = this.weatherService.units.subscribe((units: any) => {
       this.units = units;
     })
@@ -35,6 +33,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.currentUnits = unit.name;
       }
     })
-    this.weatherService.setUnit(this.units, this.currentUnits);
+    this.weatherService.setUnits(this.units, this.currentUnits);
   }
 }

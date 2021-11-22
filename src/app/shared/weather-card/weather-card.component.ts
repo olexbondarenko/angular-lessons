@@ -11,9 +11,8 @@ export class WeatherCardComponent {
   @Input() currentUnits: string = "";
 
   getTimesOfDay() {
-    var date = new Date();
-    var hours = date.getHours();
-
+    let date = new Date();
+    let hours = date.getHours();
     let timesOfDay = "";
 
     if (hours >= 6 && hours <= 12) {

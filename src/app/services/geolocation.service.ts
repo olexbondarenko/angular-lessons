@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Geolocation } from '../interfaces/geolocation';
 
 @Injectable({
@@ -9,10 +10,11 @@ import { Geolocation } from '../interfaces/geolocation';
 export class GeolocationService {
   constructor(private http: HttpClient) { }
 
-  async getCurrentLocation(): Promise<Geolocation> {
+  getCurrentLocation(): Observable<Geolocation> {
     let params = {
       fields: "city,regionName,lat,lon",
+
     }
-    return await this.http.get<Geolocation>("http://ip-api.com/json/", { params }).toPromise().then(data => data);
+    return this.http.get<Geolocation>("http://ip-api.com/json/", { params });
   }
 }

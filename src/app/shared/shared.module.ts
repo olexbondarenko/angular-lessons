@@ -4,11 +4,13 @@ import { FormsModule } from '@angular/forms';
 
 import { SearchComponent } from './search/search.component';
 import { WeatherCardComponent } from './weather-card/weather-card.component';
+import { ErrorComponent } from '../error/error.component';
 
 @NgModule({
   declarations: [
     SearchComponent,
-    WeatherCardComponent
+    WeatherCardComponent,
+    ErrorComponent
   ],
   imports: [
     CommonModule,
@@ -17,6 +19,7 @@ import { WeatherCardComponent } from './weather-card/weather-card.component';
   exports: [
     SearchComponent,
     WeatherCardComponent,
+    ErrorComponent
   ]
 })
 export class SharedModule { }

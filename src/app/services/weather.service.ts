@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from "rxjs/operators";
 import { Weather } from '../interfaces/weather';
 import { Units } from '../interfaces/units';
 import { Geolocation } from '../interfaces/geolocation';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.local';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class WeatherService {
-  constructor(private http: HttpClient) { }
-
+  // Api settings
   private api = {
-    key: environment.apiKey,
+    key: environment.config.apiKey,
     url: "https://api.openweathermap.org/data/2.5",
     urlGeo: "http://api.openweathermap.org/geo/1.0",
     points: {
@@ -24,6 +24,7 @@ export class WeatherService {
     }
   }
 
+  // Units variables
   public currentUnits: BehaviorSubject<string> = new BehaviorSubject("metric");
   public units: BehaviorSubject<Units[]> = new BehaviorSubject([
     {
@@ -38,6 +39,7 @@ export class WeatherService {
     }
   ]);
 
+  // Geolocation variables
   public currentCity: BehaviorSubject<string> = new BehaviorSubject("");
   public currentLocation: BehaviorSubject<Geolocation> = new BehaviorSubject<Geolocation>({
     lat: 0,
@@ -47,9 +49,19 @@ export class WeatherService {
     regionName: "",
   });
 
+  // Error variables
+  public errorMessage: BehaviorSubject<string> = new BehaviorSubject("");
+
+  constructor(private http: HttpClient) { }
+
+
+  // Set errors if has bad request
+  setError(message: string): void {
+    this.errorMessage.next(message);
+  }
 
   // Changes active units also set current
-  setUnit(units: any, currentUnits: string): void {
+  setUnits(units: any, currentUnits: string): void {
     this.units.next(units);
     this.currentUnits.next(currentUnits);
   }
@@ -73,15 +85,13 @@ export class WeatherService {
     return Date.parse(date.toString()) / 1000;
   }
 
-  // Get coordinates by city name
-  getCityGeolocation(currentCity: string) {
+  // Get coordinates by city name and set current location
+  getCityGeolocation(currentCity: string): Observable<Geolocation[]> {
     let params = {
       q: currentCity,
       appid: this.api.key,
     }
-    this.http.get<Geolocation[]>(this.api.urlGeo + this.api.points.geo, { params }).subscribe((city) => {
-      this.setCurrentLocation(city[0]);
-    })
+    return this.http.get<Geolocation[]>(this.api.urlGeo + this.api.points.geo, { params })
   }
 
   // Gets current weather data and also for 5 next days

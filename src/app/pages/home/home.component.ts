@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { WeatherService } from 'src/app/services/weather.service';
-import { Subscription } from 'rxjs';
-import { CurrentWeather, ForecastWeather, Weather } from 'src/app/interfaces/weather';
+import { Subscription, combineLatest } from 'rxjs';
+import { CurrentWeather, ForecastWeather } from 'src/app/interfaces/weather';
 
 @Component({
   selector: 'app-home',
@@ -9,10 +9,9 @@ import { CurrentWeather, ForecastWeather, Weather } from 'src/app/interfaces/wea
   styleUrls: ['./home.component.scss']
 })
 
-export class HomeComponent implements OnInit, OnDestroy {
-  constructor(private weatherService: WeatherService) { }
-
+export class HomeComponent implements OnDestroy {
   public subscription: Subscription = new Subscription;
+  public errorMessage: string = "";
   public currentUnits: string = "";
   public currentCity: string = "";
   public currentWeather: CurrentWeather = {
@@ -25,32 +24,30 @@ export class HomeComponent implements OnInit, OnDestroy {
     wind_speed: 0,
     sunrise: 0,
     sunset: 0,
-    weather: {
-      0: {
-        icon: "",
-        description: "",
-        main: "",
-      }
-    }
+    weather: []
   };
-  public forecastWeather: any = [];
-  public errorMessage: string = "";
+  public forecastWeather: ForecastWeather[] = [];
 
-  ngOnInit() {
-    this.subscription = this.weatherService.currentLocation.subscribe((currentLocation) => {
+  constructor(private weatherService: WeatherService) {
+    this.subscription = combineLatest([
+      this.weatherService.currentLocation,
+      this.weatherService.currentUnits,
+      this.weatherService.errorMessage
+    ]).subscribe(([currentLocation, currentUnits, errorMessage]) => {
       this.currentCity = currentLocation.city || currentLocation.name;
-      this.weatherService.getCurrentWeather().subscribe(data => {
-        this.currentWeather = data.current;
-        this.forecastWeather = data.daily;
-      })
-    });
+      this.currentUnits = currentUnits;
+      this.errorMessage = errorMessage;
 
-    this.subscription = this.weatherService.currentUnits.subscribe((units) => {
-      this.currentUnits = units;
-      this.weatherService.getCurrentWeather().subscribe(data => {
-        this.currentWeather = data.current;
-        this.forecastWeather = data.daily;
-      })
+      this.weatherService.getCurrentWeather().subscribe(
+        (response) => {
+          this.currentWeather = response.current;
+          this.forecastWeather = Object.values(response.daily).slice(1);
+        },
+        (error) => {
+          this.weatherService.setError(error.statusText);
+          this.subscription.unsubscribe();
+        }
+      )
     });
   }
 

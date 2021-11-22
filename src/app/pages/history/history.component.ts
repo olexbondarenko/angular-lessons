@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { WeatherService } from 'src/app/services/weather.service';
-import { Subscription } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { Weather } from 'src/app/interfaces/weather';
 
 @Component({
@@ -9,24 +9,33 @@ import { Weather } from 'src/app/interfaces/weather';
   styleUrls: ['./history.component.scss']
 })
 
-export class HistoryComponent implements OnInit, OnDestroy {
-  constructor(private weatherService: WeatherService) { }
-
+export class HistoryComponent implements OnDestroy {
   public subscription: Subscription = new Subscription;
   public title: string = "History";
+  public errorMessage: string = "";
   public currentUnits: string = "";
   public historyDays: number = 5;
   public historicalWeather: Weather[] = [];
 
-  ngOnInit() {
-    this.subscription = this.weatherService.currentUnits.subscribe(async (units: string) => {
-      this.currentUnits = units;
+  constructor(private weatherService: WeatherService) {
+    this.subscription = combineLatest([
+      this.weatherService.currentUnits,
+      this.weatherService.errorMessage
+    ]).subscribe(([currentUnits, errorMessage]) => {
+      this.currentUnits = currentUnits;
+      this.errorMessage = errorMessage;
       this.historicalWeather = [];
 
       for (let day = 1; day <= this.historyDays; day++) {
-        this.weatherService.getHistoricalWeather(day).subscribe(data => {
-          this.historicalWeather.push(data);
-        });
+        this.weatherService.getHistoricalWeather(day).subscribe(
+          (response) => {
+            this.historicalWeather.push(response);
+          },
+          (error) => {
+            this.weatherService.setError(error.statusText);
+            this.subscription.unsubscribe();
+          }
+        );
       }
     })
   }
